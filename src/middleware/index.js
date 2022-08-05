@@ -9,6 +9,7 @@ exports.hashPass = async (req, res, next) => {
     // req.body.password = hashedPass; //re-store value
     req.body.password = await bcrypt.hash(req.body.password, 8); //all above lines, condensed into 1 line
     next();
+    // req.body.password = hashedPass
     //take a password out of the body, hash that password with bcrypt, and then put it back in the body
   } 
   //-------------------- 
@@ -64,3 +65,52 @@ exports.tokenCheck = async (req, res, next) => {
   }
 };
 //----------------------------------------------------------------------------------------------------
+exports.passHashUpdate = async (req, res, next) => {
+//   try {
+//     console.log("Password hash")
+//     req.user = await User.findOne({ username: req.body.username})
+//     if (req.user && (await bcrypt.compare(req.body.password, req.user.password))) {
+//       const newPass = req.body.newPassword;
+//       const newHashedPass = await bcrypt.hash(newPass, 8); 
+//       req.body.newPassword = newHashedPass;
+//       next()
+//     }
+//     //-------------------- 
+//     else {
+//       res.send({ err: error})
+//       throw new Error("Incorrect Credentials")
+//     }    
+//   }
+//   //-------------------- 
+//      catch (error) {
+//     console.log(error);
+//     res.status(500).send({ error: error.message });
+//   }
+// }
+
+// exports.updatePass = async (req, res, next) => {
+  try {
+    console.log("Comparing entered Password with stored Password...")
+
+    req.user = await User.findOne({ username: req.body.username})
+    console.log(req.body.password);
+    console.log(req.user.password);
+    console.log(await bcrypt.compare(req.body.password, req.user.password))
+    if (req.user && (await bcrypt.compare(req.body.password, req.user.password))) {
+      console.log("hashing New Password...")
+      const newPass = req.body.newPassword;             //grab value
+      console.log(newPass)
+      console.log("is now Hashed as...")
+      const newHashedPass = await bcrypt.hash(newPass, 8); //hash value
+      console.log(newHashedPass)
+      req.body.newPassword = newHashedPass;             //re-store value
+      next()
+    }
+    else {
+      throw new Error("Incorrect Credentials")
+    }    
+  } catch (error) {
+    console.log(error);
+    res.status(418).send({ error: error.message });
+  }
+}

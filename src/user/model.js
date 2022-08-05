@@ -20,20 +20,25 @@ const userSchema = new mongoose.Schema({
   //-------------------- 
 });
 //----------------------------------------------------------------------------------------------------
-const movieSchema = new mongoose.Schema({
-  movie: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  //-------------------- 
-  actor: {
-    type: String,
-    default: "Not listed"
-  },
-  //-------------------- 
-});
-const User = mongoose.model("User", userSchema);
-const Movie = mongoose.model("User", movieSchema);
 
-module.exports = User, Movie;
+const User = mongoose.model("User", userSchema);
+
+
+module.exports = User;
+
+
+// title: {
+//   type: String,
+//   required: true,
+//   unique: true,
+// },
+// actors: [
+//   {
+//     type: String,
+//   },
+// ],
+// users: [
+//   {
+//     type: String,
+//   },
+// ],
